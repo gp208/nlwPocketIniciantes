@@ -148,3 +148,16 @@ body {
   color: var(--gray-200);
   line-height: 32px;
 }
+
+.icon-button {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.open-toggle {
+  position: absolute;
+  top: 62px;
+  left: 62px;
+}
