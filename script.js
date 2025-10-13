@@ -15,7 +15,8 @@ const elements = {
 	btnCollapse: document.getElementById('btn-collapse'),
   sidebar: document.querySelector('.sidebar'),
 	btnSave: document.getElementById('btn-save'),
-	list: document.getElementById('prompt-list')
+	list: document.getElementById('prompt-list'),
+	search: document.getElementById('search-input')
 }
 // Atualiza o estado do wrapper baseado no conteúdo do elemento
 function updateEditableWrapperState(element, wrapper) {
@@ -102,8 +103,9 @@ function renderList(filterText = '') {
 	).map((p) => createPromptItem(p)).join('')
 	elements.list.innerHTML = filteredPrompts
 }
-// Eventos dos botões
+// Eventos
 elements.btnSave.addEventListener('click', save)
+elements.search.addEventListener('input', (event) => {renderList(event.target.value)})
 
 function init() {
 	load()
