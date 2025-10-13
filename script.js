@@ -14,7 +14,8 @@ const elements = {
 	btnOpen: document.getElementById('btn-open'),
 	btnCollapse: document.getElementById('btn-collapse'),
   sidebar: document.querySelector('.sidebar'),
-	btnSave: document.getElementById('btn-save')
+	btnSave: document.getElementById('btn-save'),
+	list: document.getElementById('prompt-list')
 }
 // Atualiza o estado do wrapper baseado no conteúdo do elemento
 function updateEditableWrapperState(element, wrapper) {
@@ -77,14 +78,36 @@ function load() {
 		const stored = localStorage.getItem(STORAGE_KEY)
 		state.prompts = stored ? JSON.parse(stored) : []
 		state.selectedId = null
-		console.log(state.prompts)
 	} catch (error) {console.error('Erro ao carregar do localStorage:', error)}
+}
+
+function createPromptItem(prompt) {
+	return `
+		<li class='prompt-item'>
+			<div class='prompt-item-content'>
+				<span class='prompt-item-title'>${prompt.title}</span>
+				<span class='prompt-item-description'>${prompt.content}</span>
+			</div>
+
+			<button class='btn-icon' title='Remover'>
+				<img src='assets/remove.svg' alt='Remover' class='icon icon-trash' />
+			</button>
+		</li>
+	`
+}
+
+function renderList(filterText = '') {
+	const filteredPrompts = state.prompts.filter((prompt) =>
+		prompt.title.toLowerCase().includes(filterText.toLowerCase().trim())
+	).map((p) => createPromptItem(p)).join('')
+	elements.list.innerHTML = filteredPrompts
 }
 // Eventos dos botões
 elements.btnSave.addEventListener('click', save)
 
 function init() {
 	load()
+	renderList('')
 	attachAllEditableHandlers()
 	updateAllEditableStates()
   // Estado inicial: sidebar aberta, botão de abrir oculto
