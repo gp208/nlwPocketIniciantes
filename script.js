@@ -71,10 +71,20 @@ function persist() {
 	try {localStorage.setItem(STORAGE_KEY, JSON.stringify(state.prompts))}
 	catch (error) {console.error('Erro ao salvar no localStorage:', error)}
 }
+
+function load() {
+	try {
+		const stored = localStorage.getItem(STORAGE_KEY)
+		state.prompts = stored ? JSON.parse(stored) : []
+		state.selectedId = null
+		console.log(state.prompts)
+	} catch (error) {console.error('Erro ao carregar do localStorage:', error)}
+}
 // Eventos dos botões
 elements.btnSave.addEventListener('click', save)
 
 function init() {
+	load()
 	attachAllEditableHandlers()
 	updateAllEditableStates()
   // Estado inicial: sidebar aberta, botão de abrir oculto
