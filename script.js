@@ -56,6 +56,20 @@ function save() {
     alert('Título e conteúdo não podem estar vazios.')
     return
   }
+
+	if (state.selectedId) { // Editando um prompt existente
+	} else { // Criando um novo prompt
+		const newPrompt = {id: Date.now().toString(36), title, content}
+		state.prompts.unshift(newPrompt)
+		state.selectedId = newPrompt.id
+	}
+
+	persist()
+}
+
+function persist() {
+	try {localStorage.setItem(STORAGE_KEY, JSON.stringify(state.prompts))}
+	catch (error) {console.error('Erro ao salvar no localStorage:', error)}
 }
 // Eventos dos botões
 elements.btnSave.addEventListener('click', save)
