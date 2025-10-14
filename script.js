@@ -17,7 +17,8 @@ const elements = {
 	btnSave: document.getElementById('btn-save'),
 	list: document.getElementById('prompt-list'),
 	search: document.getElementById('search-input'),
-	btnNew: document.getElementById('btn-new')
+	btnNew: document.getElementById('btn-new'),
+	btnCopy: document.getElementById('btn-copy')
 }
 // Atualiza o estado do wrapper baseado no conteúdo do elemento
 function updateEditableWrapperState(element, wrapper) {
@@ -118,9 +119,21 @@ function newPrompt() {
 	updateAllEditableStates()
 	elements.promptTitle.focus()
 }
+
+function copySelected() {
+	try {
+		const content = elements.promptContent
+		if (!navigator.clipboard) {
+			console.error('Clipboard API não suportada neste ambiente.')
+			return
+		}
+		navigator.clipboard.writeText(content.innerText)
+	} catch (error) {console.error('Erro ao copiar para a área de transferência:', error)}
+}
 // Eventos
 elements.btnSave.addEventListener('click', save)
 elements.btnNew.addEventListener('click', newPrompt)
+elements.btnCopy.addEventListener('click', copySelected)
 elements.search.addEventListener('input', (event) => {renderList(event.target.value)})
 elements.list.addEventListener('click', (event) => {
 	const removeBtn = event.target.closest('button[data-action="remove"]')
