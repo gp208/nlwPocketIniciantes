@@ -16,7 +16,8 @@ const elements = {
   sidebar: document.querySelector('.sidebar'),
 	btnSave: document.getElementById('btn-save'),
 	list: document.getElementById('prompt-list'),
-	search: document.getElementById('search-input')
+	search: document.getElementById('search-input'),
+	btnNew: document.getElementById('btn-new')
 }
 // Atualiza o estado do wrapper baseado no conteúdo do elemento
 function updateEditableWrapperState(element, wrapper) {
@@ -104,8 +105,17 @@ function renderList(filterText = '') {
 	).map((p) => createPromptItem(p)).join('')
 	elements.list.innerHTML = filteredPrompts
 }
+
+function newPrompt() {
+	state.selectedId = null
+	elements.promptTitle.textContent = ''
+	elements.promptContent.textContent = ''
+	updateAllEditableStates()
+	elements.promptTitle.focus()
+}
 // Eventos
 elements.btnSave.addEventListener('click', save)
+elements.btnNew.addEventListener('click', newPrompt)
 elements.search.addEventListener('input', (event) => {renderList(event.target.value)})
 elements.list.addEventListener('click', (event) => {
 	const removeBtn = event.target.closest('button[data-action="remove"]')
