@@ -84,13 +84,13 @@ function load() {
 
 function createPromptItem(prompt) {
 	return `
-		<li class='prompt-item'>
+		<li class='prompt-item' data-id='${prompt.id}' data-action='select'>
 			<div class='prompt-item-content'>
 				<span class='prompt-item-title'>${prompt.title}</span>
 				<span class='prompt-item-description'>${prompt.content}</span>
 			</div>
 
-			<button class='btn-icon' title='Remover'>
+			<button class='btn-icon' title='Remover' data-action='remove'>
 				<img src='assets/remove.svg' alt='Remover' class='icon icon-trash' />
 			</button>
 		</li>
@@ -106,6 +106,24 @@ function renderList(filterText = '') {
 // Eventos
 elements.btnSave.addEventListener('click', save)
 elements.search.addEventListener('input', (event) => {renderList(event.target.value)})
+elements.list.addEventListener('click', (event) => {
+	const removeBtn = event.target.closest('button[data-action="remove"]')
+	const item = event.target.closest('[data-id]')
+	if (!item) return
+	const id = item.getAttribute('data-id')
+	state.selectedId = id
+	if (removeBtn) { // Remover prompt
+		return
+	}
+	if (event.target.closest('[data-action="select"]')) { // Selecionar prompt
+		const prompt = state.prompts.find(p => p.id === id)
+		if (prompt) {
+			elements.promptTitle.textContent = prompt.title
+			elements.promptContent.innerHTML = prompt.content
+			updateAllEditableStates()
+		}
+	}
+})
 
 function init() {
 	load()
