@@ -66,6 +66,7 @@ function save() {
 		state.selectedId = newPrompt.id
 	}
 
+	renderList(elements.search.value)
 	persist()
 }
 
