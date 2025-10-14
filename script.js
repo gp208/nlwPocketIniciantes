@@ -113,6 +113,9 @@ elements.list.addEventListener('click', (event) => {
 	const id = item.getAttribute('data-id')
 	state.selectedId = id
 	if (removeBtn) { // Remover prompt
+		state.prompts = state.prompts.filter(p => p.id !== id)
+		renderList(elements.search.value)
+		persist()
 		return
 	}
 	if (event.target.closest('[data-action="select"]')) { // Selecionar prompt
